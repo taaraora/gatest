@@ -42,7 +42,7 @@ jobs:
           tags: taaraora/cs-20:latest
 
       - name: AWS SSM Send-Command
-        uses: peterkimzz/aws-ssm-send-command@master
+        uses: peterkimzz/aws-ssm-send-command@v1.1.1
         id: ssm
         with:
           aws-region: ${{ secrets.AWS_REGION }}
