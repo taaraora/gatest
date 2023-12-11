@@ -1,4 +1,4 @@
-FROM golang:1.19.3 as builder
+FROM golang:1.21.0 as builder
 # Set environment veriables for Go module and x64 architecture
 ARG ARCH=amd64
 # Set current working directory inside the container
