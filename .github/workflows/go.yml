@@ -51,7 +51,7 @@ jobs:
           echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
             cd /home/ubuntu/
-            hostanme
+            hostname
             /usr/bin/docker run -d  -p 8080:8080 taaraora/cs-20:latest
           '
 
