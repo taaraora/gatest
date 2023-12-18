@@ -26,3 +26,32 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          push: true
+          tags: taaraora/cs-20:latest
+
+      - name: Build & Deploy
+        env:
+          PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          HOSTNAME: ${{secrets.HOST_DNS}}
+          USER_NAME: ${{secrets.USERNAME}}
+
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+            cd /home/ubuntu/
+            hostname
+            /usr/bin/docker run -d  -p 8080:8080 taaraora/cs-20:latest
+          '
+
